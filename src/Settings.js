@@ -1,21 +1,19 @@
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  InputNumber,
+  Radio,
+  Rate,
+  Row,
+  Select,
+  Slider,
+  Switch,
+} from "antd";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import {
-  Form,
-  Select,
-  InputNumber,
-  Switch,
-  Radio,
-  Slider,
-  Button,
-  Upload,
-  Rate,
-  Checkbox,
-  Row,
-  Col,
-} from "antd";
-import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 

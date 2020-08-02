@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from "react";
-import useInterval from 'use-interval';
-import styled from "styled-components";
+import AutoScroll from "@brianmcallister/react-auto-scroll";
 import { Button } from "antd";
+import React, { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import AutoScroll from '@brianmcallister/react-auto-scroll';
-
-import { useGetApi } from "./utils/hooks/useApi"
+import styled from "styled-components";
+import useInterval from "use-interval";
+import { useGetApi } from "./utils/hooks/useApi";
 
 const Row = styled.div`
   display: flex;
@@ -28,7 +27,7 @@ const Position = styled.pre`
 
 const StyledAutoScroll = styled(AutoScroll)`
   margin: 20px;
-`
+`;
 
 const Log = styled.pre`
   margin: 0px;
@@ -53,13 +52,13 @@ const Top = () => {
     readInputImgFn();
     readOutputImgFn();
     readDepthImgFn();
-  }
+  };
 
-  useEffect(intervalFn, [])
-  useInterval(intervalFn, 3000)
+  useEffect(intervalFn, []);
+  useInterval(intervalFn, 3000);
   return (
     <>
-      <Button type="primary" onClick={onClickSettingsButton}>
+      <Button type="primary" onClick={onClickSettingsButton} disabled={true}>
         設定
       </Button>
       <Row>

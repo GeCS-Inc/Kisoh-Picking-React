@@ -1,9 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
-import Top from "./Top";
+import styled from "styled-components";
 import Settings from "./Settings";
+import Top from "./Top";
 
 const Container = styled.div`
   padding: 48px;
