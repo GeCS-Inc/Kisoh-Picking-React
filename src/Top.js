@@ -44,7 +44,7 @@ const Top = () => {
   const [outputImg, readOutputImgFn] = useGetApi("/read-output-img");
   const [depthImg, readDepthImgFn] = useGetApi("/read-depth-img");
   const history = useHistory();
-  const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
+  // const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
 
   const intervalFn = () => {
     readLogFn();
@@ -58,9 +58,6 @@ const Top = () => {
   useInterval(intervalFn, 3000);
   return (
     <>
-      <Button type="primary" onClick={onClickSettingsButton} disabled={true}>
-        設定
-      </Button>
       <Row>
         <Preview>
           <p>入力画像</p>

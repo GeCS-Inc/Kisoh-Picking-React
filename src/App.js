@@ -24,8 +24,7 @@ function App() {
     <Container>
       <Router>
         <div>
-          <Route exact path="/" component={Top} />
-          <Route path="/settings" component={Settings} />
+          <Top />
         </div>
       </Router>
     </Container>
