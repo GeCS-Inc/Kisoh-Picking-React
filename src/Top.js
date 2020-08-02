@@ -43,6 +43,7 @@ const Top = () => {
   const [position, readPositionFn] = useGetApi("/read-result");
   const [inputImg, readInputImgFn] = useGetApi("/read-input-img");
   const [outputImg, readOutputImgFn] = useGetApi("/read-output-img");
+  const [depthImg, readDepthImgFn] = useGetApi("/read-depth-img");
   const history = useHistory();
   const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
 
@@ -51,6 +52,7 @@ const Top = () => {
     readPositionFn();
     readInputImgFn();
     readOutputImgFn();
+    readDepthImgFn();
   }
 
   useEffect(intervalFn, [])
@@ -68,6 +70,10 @@ const Top = () => {
         <Preview>
           <p>処理結果</p>
           <PreviewImg src={`data:image/jpeg;base64,${outputImg}`} />
+        </Preview>
+        <Preview>
+          <p>深度</p>
+          <PreviewImg src={`data:image/jpeg;base64,${depthImg}`} />
         </Preview>
       </Row>
       <Row>
