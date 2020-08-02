@@ -32,5 +32,5 @@ $ yarn package-linux
 Debian パッケージ作成
 
 ```sh
-$ electron-installer-debian --src release-builds/create-react-app-linux-x64/ --arch amd64 --config debian.json
+$ electron-installer-debian --src release-builds/electron-picking-app-linux-x64/ --arch amd64 --config debian.json
 ```
