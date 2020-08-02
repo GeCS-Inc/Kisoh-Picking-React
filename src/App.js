@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 import styled from "styled-components";
 import Settings from "./Settings";
 import Top from "./Top";
@@ -24,7 +24,8 @@ function App() {
     <Container>
       <Router>
         <div>
-          <Top />
+          <Route exact path="/" component={Top} />
+          <Route path="/settings" component={Settings} />
         </div>
       </Router>
     </Container>
