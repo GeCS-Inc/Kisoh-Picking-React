@@ -1,10 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import useInterval from 'use-interval';
 import styled from "styled-components";
 import { Button } from "antd";
 import { useHistory } from "react-router-dom";
+import AutoScroll from '@brianmcallister/react-auto-scroll';
 
-import InputImg from "./imgs/input.png";
-import OutputImg from "./imgs/output.png";
+import { useGetApi } from "./utils/hooks/useApi"
 
 const Row = styled.div`
   display: flex;
@@ -25,91 +26,35 @@ const Position = styled.pre`
   padding: 32px;
 `;
 
-const Log = styled.pre`
+const StyledAutoScroll = styled(AutoScroll)`
   margin: 20px;
+`
+
+const Log = styled.pre`
+  margin: 0px;
   font-size: 12px;
   background-color: #0e121a;
   text-align: left;
   padding: 32px;
 `;
 
-const position = `
-  (142, 191),(142, 191),
-  (163, 193),(142, 191),
-  (184, 192),(142, 191),
-  (201, 195),(142, 191),
-  (224, 194),(142, 191),
-  (246, 196),(142, 191),
-  (264, 194),(142, 191),
-  (286, 192),(142, 191),
-  (302, 193),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-  (325, 195),(142, 191),
-`;
-
-const log = `
-Use GPU: 0 for training
-BaseDataset: base_size 520, crop_size 480
-DeepLabV3(
-  (pretrained): ResNet(
-    (conv1): Sequential(
-      (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
-      (1): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (2): ReLU(inplace=True)
-      (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-      (4): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-      (5): ReLU(inplace=True)
-      (6): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-    )
-    (bn1): SyncBatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-    (relu): ReLU(inplace=True)
-    (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
-    (layer1): Sequential(
-      (0): Bottleneck(
-        (conv1): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn1): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-        (bn2): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn3): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (relu): ReLU(inplace=True)
-        (downsample): Sequential(
-          (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        )
-      )
-      (1): Bottleneck(
-        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn1): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-        (bn2): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn3): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (relu): ReLU(inplace=True)
-      )
-      (2): Bottleneck(
-        (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn1): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
-        (bn2): SyncBatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
-        (bn3): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
-        (relu): ReLU(inplace=True)
-      )
-`;
-
 const Top = () => {
+  const [log, readLogFn] = useGetApi("/read-log");
+  const [position, readPositionFn] = useGetApi("/read-result");
+  const [inputImg, readInputImgFn] = useGetApi("/read-input-img");
+  const [outputImg, readOutputImgFn] = useGetApi("/read-output-img");
   const history = useHistory();
   const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
+
+  const intervalFn = () => {
+    readLogFn();
+    readPositionFn();
+    readInputImgFn();
+    readOutputImgFn();
+  }
+
+  useEffect(intervalFn, [])
+  useInterval(intervalFn, 3000)
   return (
     <>
       <Button type="primary" onClick={onClickSettingsButton}>
@@ -118,11 +63,11 @@ const Top = () => {
       <Row>
         <Preview>
           <p>入力画像</p>
-          <PreviewImg src={InputImg} />
+          <PreviewImg src={`data:image/jpeg;base64,${inputImg}`} />
         </Preview>
         <Preview>
           <p>処理結果</p>
-          <PreviewImg src={OutputImg} />
+          <PreviewImg src={`data:image/jpeg;base64,${outputImg}`} />
         </Preview>
       </Row>
       <Row>
@@ -132,7 +77,9 @@ const Top = () => {
         </div>
         <div>
           <p>ログ</p>
-          <Log>{log}</Log>
+          <StyledAutoScroll height="720px">
+            <Log>{log}</Log>
+          </StyledAutoScroll>
         </div>
       </Row>
     </>
