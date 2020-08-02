@@ -1,9 +1,10 @@
 {
-  "name": "create-react-app",
+  "name": "electron-picking-app",
   "description": "react application for picking",
   "version": "0.1.0",
   "private": true,
-  "main": "src/main.js",
+  "main": "src/electron-starter.js",
+  "homepage": "./",
   "dependencies": {
     "@brianmcallister/react-auto-scroll": "^1.0.5",
     "@testing-library/jest-dom": "^4.2.4",
@@ -23,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "electron ."
+    "electron": "electron .",
+    "package-linux": "electron-packager . electron-picking-app --overwrite --platform=linux --arch=x64 --icon=electron-icon.png --prune=true --out=release-builds"
   },
   "eslintConfig": {
     "extends": "react-app"

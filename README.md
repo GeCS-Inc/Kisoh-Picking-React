@@ -26,12 +26,11 @@ $ yarn electron
 
 ```sh
 $ yarn build
-$ rm -r Picking-React-*
-$ electron-packager . Picking-React --platform=linux --arch=x64 --electronVersion=3.0.9 --executableName picking-react
+$ yarn package-linux
 ```
 
 Debian パッケージ作成
 
 ```sh
-$ electron-installer-debian --src Picking-React-linux-x64/ --arch amd64 --config debian.json
+$ electron-installer-debian --src release-builds/create-react-app-linux-x64/ --arch amd64 --config debian.json
 ```
