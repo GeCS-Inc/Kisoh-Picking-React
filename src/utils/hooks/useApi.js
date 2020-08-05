@@ -9,3 +9,13 @@ export function useGetApi(endpoint) {
 
   return [data, loadFn];
 }
+
+export function usePostApi(endpoint, params) {
+  const [data, setData] = useState("");
+  const loadFn = () => {
+    const urlParams = new URLSearchParams(params);
+    axios.post(`${HOST}${endpoint}`, urlParams).then((d) => setData(d.data));
+  };
+
+  return [data, loadFn];
+}

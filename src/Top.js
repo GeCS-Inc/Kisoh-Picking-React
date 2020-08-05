@@ -1,10 +1,10 @@
 import AutoScroll from "@brianmcallister/react-auto-scroll";
-import { Button } from "antd";
-import React, { useCallback, useEffect } from "react";
+import { Button, Input } from "antd";
+import React, { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import useInterval from "use-interval";
-import { useGetApi } from "./utils/hooks/useApi";
+import { useGetApi, usePostApi } from "./utils/hooks/useApi";
 
 const Row = styled.div`
   display: flex;
@@ -37,6 +37,10 @@ const Log = styled.pre`
   padding: 32px;
 `;
 
+const SubTitle = styled.p`
+  font-size: 18px;
+`;
+
 const Top = () => {
   const [log, readLogFn] = useGetApi("/read-log");
   const [position, readPositionFn] = useGetApi("/read-result");
@@ -45,6 +49,25 @@ const Top = () => {
   const [depthImg, readDepthImgFn] = useGetApi("/read-depth-img");
   const history = useHistory();
   // const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
+
+  const [plcReadDN, setPlcReadDN] = useState("");
+  const [plcReadDC, setPlcReadDC] = useState("");
+  const [plcWriteDN, setPlcWriteDN] = useState("");
+  const [plcWriteDC, setPlcWriteDC] = useState("");
+  const [plcWriteWC, setPlcWriteWC] = useState("");
+
+  const [plcReadMes, loadPlcReadMes] = usePostApi("/read-plc", {
+    device_number: plcReadDN,
+    device_count: plcReadDC,
+  });
+
+  const [plcWriteMes, loadPlcWriteMes] = usePostApi("/write-plc", {
+    device_number: plcWriteDN,
+    device_count: plcWriteDC,
+    write_content: plcWriteWC,
+  });
+
+  console.log(plcWriteMes);
 
   const intervalFn = () => {
     readLogFn();
@@ -84,6 +107,57 @@ const Top = () => {
           </StyledAutoScroll>
         </div>
       </Row>
+      <p>PLC 読み込み</p>
+      <Row>
+        <Preview>
+          <SubTitle>デバイス番号</SubTitle>
+          <Input
+            placeholder="1000"
+            value={plcReadDN}
+            onChange={(v) => setPlcReadDN(v.target.value)}
+          />
+        </Preview>
+        <Preview>
+          <SubTitle>デバイス数</SubTitle>
+          <Input placeholder="3" value={plcReadDC} onChange={(v) => setPlcReadDC(v.target.value)} />
+        </Preview>
+      </Row>
+      <Button type="primary" onClick={loadPlcReadMes}>
+        読み込み
+      </Button>
+      <Log>{plcReadMes}</Log>
+
+      <p style={{ paddingTop: 64 }}>PLC 書き込み</p>
+      <Row>
+        <Preview>
+          <SubTitle>デバイス番号</SubTitle>
+          <Input
+            placeholder="1000"
+            value={plcWriteDN}
+            onChange={(v) => setPlcWriteDN(v.target.value)}
+          />
+        </Preview>
+        <Preview>
+          <SubTitle>デバイス数</SubTitle>
+          <Input
+            placeholder="3"
+            value={plcWriteDC}
+            onChange={(v) => setPlcWriteDC(v.target.value)}
+          />
+        </Preview>
+        <Preview>
+          <SubTitle>書き込み内容</SubTitle>
+          <Input
+            placeholder="10,11,23"
+            value={plcWriteWC}
+            onChange={(v) => setPlcWriteWC(v.target.value)}
+          />
+        </Preview>
+      </Row>
+      <Button type="primary" onClick={loadPlcWriteMes}>
+        書き込み
+      </Button>
+      <Log>{plcWriteMes}</Log>
     </>
   );
 };
