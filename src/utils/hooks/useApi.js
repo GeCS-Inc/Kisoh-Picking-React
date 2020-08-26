@@ -1,12 +1,37 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const HOST = "http://localhost:8000";
 
-export function useGetApi(endpoint) {
+export function useGetApi(endpoint, lazy = true) {
   const [data, setData] = useState("");
-  const loadFn = () => axios.get(`${HOST}${endpoint}`).then((d) => setData(d.data));
+  const [loading, setLoading] = useState(!lazy);
+  const loadFn = useCallback(() => {
+    setLoading(true);
+    axios
+      .get(`${HOST}${endpoint}`)
+      .then((d) => setData(d.data))
+      .finally(() => setLoading(false));
+  }, [endpoint]);
 
+  useEffect(() => {
+    if (!lazy) loadFn();
+  }, []);
+
+  return [data, loading, loadFn];
+}
+
+export function useFormPostApi(endpoint, onSuccess) {
+  const [data, setData] = useState("");
+  const loadFn = useCallback(
+    (params) => {
+      axios.post(`${HOST}${endpoint}`, params).then((d) => {
+        setData(d.data);
+        onSuccess();
+      });
+    },
+    [endpoint]
+  );
   return [data, loadFn];
 }
 
@@ -16,6 +41,5 @@ export function usePostApi(endpoint, params) {
     const urlParams = new URLSearchParams(params);
     axios.post(`${HOST}${endpoint}`, urlParams).then((d) => setData(d.data));
   };
-
   return [data, loadFn];
 }

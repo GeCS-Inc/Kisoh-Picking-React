@@ -42,13 +42,13 @@ const SubTitle = styled.p`
 `;
 
 const Top = () => {
-  const [log, readLogFn] = useGetApi("/read-log");
-  const [position, readPositionFn] = useGetApi("/read-result");
-  const [inputImg, readInputImgFn] = useGetApi("/read-input-img");
-  const [outputImg, readOutputImgFn] = useGetApi("/read-output-img");
-  const [depthImg, readDepthImgFn] = useGetApi("/read-depth-img");
+  const [log, , readLogFn] = useGetApi("/read-log");
+  const [position, , readPositionFn] = useGetApi("/read-result");
+  const [inputImg, , readInputImgFn] = useGetApi("/read-input-img");
+  const [outputImg, , readOutputImgFn] = useGetApi("/read-output-img");
+  const [depthImg, , readDepthImgFn] = useGetApi("/read-depth-img");
   const history = useHistory();
-  // const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
+  const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
 
   const [plcReadDN, setPlcReadDN] = useState("");
   const [plcReadDC, setPlcReadDC] = useState("");
@@ -67,8 +67,6 @@ const Top = () => {
     write_content: plcWriteWC,
   });
 
-  console.log(plcWriteMes);
-
   const intervalFn = () => {
     readLogFn();
     readPositionFn();
@@ -81,6 +79,9 @@ const Top = () => {
   useInterval(intervalFn, 3000);
   return (
     <>
+      <Button type="primary" onClick={onClickSettingsButton}>
+        設定ページへ
+      </Button>
       <Row>
         <Preview>
           <p>入力画像</p>
