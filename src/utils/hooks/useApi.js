@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 
-// const HOST = "http://localhost:8000";
-const HOST = "http://127.0.0.1:8000";
+const HOST = "http://localhost:8000";
+// const HOST = "http://127.0.0.1:8000";
 
 export function useGetApi(endpoint, lazy = true) {
   const [data, setData] = useState("");
