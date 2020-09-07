@@ -7,12 +7,13 @@ import { useGetApi, useFormPostApi } from "./utils/hooks/useApi";
 const { Option } = Select;
 
 const formItemLayout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 14 },
+  labelCol: { span: 12 },
+  wrapperCol: { span: 18 },
 };
 
 const StyledForm = styled(Form)`
-  margin: 10px;
+  margin: 0px;
+  width: 500px;
 `;
 
 const Text = styled.span`
@@ -31,16 +32,19 @@ const Settings = () => {
     message.success("設定を初期化しました。", 3)
   );
   const history = useHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onClickBackButton = useCallback(() => history.push("/"), []);
   const onFinish = useCallback((value) => {
     console.log(value);
     const params = { ...value };
     updateFn(params);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onReset = useCallback(() => {
     resetFn();
     loadFn();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <Button type="primary" htmlType="submit" onClick={onClickBackButton}>
@@ -101,6 +105,13 @@ const Forms = ({ currentConfig, onFinish }) => (
     </Form.Item>
 
     <SectionTitle>Realsense</SectionTitle>
+    <Form.Item
+      name="rgb_calibration"
+      label={<Text>RGB画像キャリブレーション</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
     <Form.Item label={<Text>X軸 加速度 最大値</Text>}>
       <Form.Item name="accel_max_x">
         <InputNumber min={5} max={20} />
@@ -123,6 +134,9 @@ const Forms = ({ currentConfig, onFinish }) => (
         <Option value="depth_camera">Realsense Depth Camera</Option>
       </Select>
     </Form.Item>
+    <Form.Item name="tta" label={<Text>TTA（精度向上）</Text>} valuePropName="checked">
+      <Switch />
+    </Form.Item>
     <Form.Item name="use_sample" label={<Text>サンプル画像を使用</Text>} valuePropName="checked">
       <Switch />
     </Form.Item>
@@ -135,12 +149,31 @@ const Forms = ({ currentConfig, onFinish }) => (
     <Form.Item name="reverse_y" label={<Text>Y軸を反転</Text>} valuePropName="checked">
       <Switch />
     </Form.Item>
-    <SectionTitle>その他</SectionTitle>
-    <Form.Item label={<Text>角度の値の倍率</Text>}>
-      <Form.Item name="angle_rate">
-        <InputNumber min={1} max={100} />
+    <Form.Item
+      name="convert_dimension"
+      label={<Text>基準ブロックを使用して座標変換</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item label={<Text>座標値の倍率</Text>}>
+      <Form.Item name="pos_rate">
+        <InputNumber min={1} max={10000} />
       </Form.Item>
     </Form.Item>
+    <Form.Item label={<Text>姿勢値の倍率</Text>}>
+      <Form.Item name="angle_rate">
+        <InputNumber min={1} max={10000} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item
+      name="write_point_with_2word"
+      label={<Text>書き込みに2レジスタを使用</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <SectionTitle>その他</SectionTitle>
 
     <Form.Item label={<Text>プレビューの点サイズ</Text>}>
       <Form.Item name="preview_point_size">

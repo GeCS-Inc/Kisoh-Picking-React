@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 
-const HOST = "http://localhost:8000";
+// const HOST = "http://localhost:8000";
+const HOST = "http://127.0.0.1:8000";
 
 export function useGetApi(endpoint, lazy = true) {
   const [data, setData] = useState("");
@@ -16,7 +17,8 @@ export function useGetApi(endpoint, lazy = true) {
 
   useEffect(() => {
     if (!lazy) loadFn();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endpoint]);
 
   return [data, loading, loadFn];
 }
@@ -30,6 +32,7 @@ export function useFormPostApi(endpoint, onSuccess) {
         onSuccess();
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [endpoint]
   );
   return [data, loadFn];

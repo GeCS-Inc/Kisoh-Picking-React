@@ -48,6 +48,7 @@ const Top = () => {
   const [outputImg, , readOutputImgFn] = useGetApi("/read-output-img");
   const [depthImg, , readDepthImgFn] = useGetApi("/read-depth-img");
   const history = useHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onClickSettingsButton = useCallback(() => history.push("/settings"), []);
 
   const [plcReadDN, setPlcReadDN] = useState("");
