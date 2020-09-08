@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import useInterval from "use-interval";
 import { useGetApi, usePostApi } from "./utils/hooks/useApi";
+import sampleImg from "./resources/sample.png";
 
 const Row = styled.div`
   display: flex;
@@ -14,7 +15,8 @@ const Preview = styled.div`
   margin: 20px;
 `;
 const PreviewImg = styled.img`
-  width: 400px;
+  width: 384px;
+  height: 384px;
 `;
 
 const Position = styled.pre`
@@ -68,6 +70,18 @@ const Top = () => {
     write_content: plcWriteWC,
   });
 
+  const inputImgSrc = inputImg.length > 0 ? `data:image/jpeg;base64,${inputImg}` : sampleImg;
+  const outputImgSrc = outputImg.length > 0 ? `data:image/jpeg;base64,${outputImg}` : sampleImg;
+  const depthImgSrc = depthImg.length > 0 ? `data:image/jpeg;base64,${depthImg}` : sampleImg;
+
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  const onMouseMove = useCallback((e) => {
+    setX(e.nativeEvent.offsetX);
+    setY(e.nativeEvent.offsetY);
+  }, []);
+
   const intervalFn = () => {
     readLogFn();
     readPositionFn();
@@ -86,16 +100,21 @@ const Top = () => {
       <Row>
         <Preview>
           <p>入力画像</p>
-          <PreviewImg src={`data:image/jpeg;base64,${inputImg}`} />
+          <PreviewImg src={inputImgSrc} onMouseMove={onMouseMove} />
         </Preview>
         <Preview>
           <p>処理結果</p>
-          <PreviewImg src={`data:image/jpeg;base64,${outputImg}`} />
+          <PreviewImg src={outputImgSrc} onMouseMove={onMouseMove} />
         </Preview>
         <Preview>
           <p>深度</p>
-          <PreviewImg src={`data:image/jpeg;base64,${depthImg}`} />
+          <PreviewImg src={depthImgSrc} onMouseMove={onMouseMove} />
         </Preview>
+      </Row>
+      <Row>
+        <pre>
+          x: {x}, y: {y}
+        </pre>
       </Row>
       <Row>
         <div>

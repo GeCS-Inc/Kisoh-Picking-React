@@ -156,6 +156,23 @@ const Forms = ({ currentConfig, onFinish }) => (
     >
       <Switch />
     </Form.Item>
+    <Form.Item
+      name="use_manual_block_pos"
+      label={<Text>基準ブロックの座標を手動入力</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item label={<Text>基準ブロック X座標</Text>}>
+      <Form.Item name="manual_block_pos_x">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>基準ブロック Y座標</Text>}>
+      <Form.Item name="manual_block_pos_y">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
     <Form.Item label={<Text>座標値の倍率</Text>}>
       <Form.Item name="pos_rate">
         <InputNumber min={1} max={10000} />
