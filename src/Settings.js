@@ -175,6 +175,14 @@ const Forms = ({ currentConfig, onFinish }) => (
     </Form.Item>
     <SectionTitle>その他</SectionTitle>
 
+    <Form.Item
+      name="experiment"
+      label={<Text>実験モード（PLC・Realsenseを使用しない）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+
     <Form.Item label={<Text>プレビューの点サイズ</Text>}>
       <Form.Item name="preview_point_size">
         <InputNumber min={1} max={10} />
