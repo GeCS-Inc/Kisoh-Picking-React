@@ -163,13 +163,23 @@ const Forms = ({ currentConfig, onFinish }) => (
     >
       <Switch />
     </Form.Item>
-    <Form.Item label={<Text>基準ブロック X座標</Text>}>
-      <Form.Item name="manual_block_pos_x">
+    <Form.Item label={<Text>基準ブロック X座標1</Text>}>
+      <Form.Item name="manual_block_pos_x1">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
-    <Form.Item label={<Text>基準ブロック Y座標</Text>}>
-      <Form.Item name="manual_block_pos_y">
+    <Form.Item label={<Text>基準ブロック Y座標1</Text>}>
+      <Form.Item name="manual_block_pos_y1">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>基準ブロック X座標2</Text>}>
+      <Form.Item name="manual_block_pos_x2">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>基準ブロック Y座標2</Text>}>
+      <Form.Item name="manual_block_pos_y2">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
