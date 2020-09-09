@@ -59,6 +59,9 @@ const Top = () => {
   const [plcWriteDC, setPlcWriteDC] = useState("");
   const [plcWriteWC, setPlcWriteWC] = useState("");
 
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
   const [plcReadMes, loadPlcReadMes] = usePostApi("/read-plc", {
     device_number: plcReadDN,
     device_count: plcReadDC,
@@ -70,12 +73,14 @@ const Top = () => {
     write_content: plcWriteWC,
   });
 
+  const [testPointResult, writeTestPoint] = usePostApi("/write_test_point", {
+    x,
+    y,
+  });
+
   const inputImgSrc = inputImg.length > 0 ? `data:image/jpeg;base64,${inputImg}` : sampleImg;
   const outputImgSrc = outputImg.length > 0 ? `data:image/jpeg;base64,${outputImg}` : sampleImg;
   const depthImgSrc = depthImg.length > 0 ? `data:image/jpeg;base64,${depthImg}` : sampleImg;
-
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
 
   const onMouseMove = useCallback((e) => {
     setX(e.nativeEvent.offsetX);
@@ -100,15 +105,23 @@ const Top = () => {
       <Row>
         <Preview>
           <p>入力画像</p>
-          <PreviewImg src={inputImgSrc} onMouseMove={onMouseMove} />
+          <SubTitle> {"　"} </SubTitle>
+          <PreviewImg src={inputImgSrc} onMouseMove={onMouseMove} onClick={writeTestPoint} />
+          <SubTitle> {"　"} </SubTitle>
         </Preview>
         <Preview>
           <p>処理結果</p>
-          <PreviewImg src={outputImgSrc} onMouseMove={onMouseMove} />
+          <SubTitle>クリックでテストレジスタに座標書き込み</SubTitle>
+          <PreviewImg src={outputImgSrc} onMouseMove={onMouseMove} onClick={writeTestPoint} />
+          {testPointResult.split("\n").map((s) => (
+            <SubTitle>{s}</SubTitle>
+          ))}
         </Preview>
         <Preview>
           <p>深度</p>
-          <PreviewImg src={depthImgSrc} onMouseMove={onMouseMove} />
+          <SubTitle> {"　"} </SubTitle>
+          <PreviewImg src={depthImgSrc} onMouseMove={onMouseMove} onClick={writeTestPoint} />
+          <SubTitle> {"　"} </SubTitle>
         </Preview>
       </Row>
       <Row>
