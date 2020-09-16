@@ -86,49 +86,27 @@ const Forms = ({ currentConfig, onFinish }) => (
         <InputNumber min={1} max={20000} />
       </Form.Item>
     </Form.Item>
+
+    <SectionTitle>PLC</SectionTitle>
     <Form.Item label={<Text>PLC ホスト名</Text>}>
-      <Form.Item name="plc_host">
+      <Form.Item name="plc.host">
         <Input />
       </Form.Item>
     </Form.Item>
     <Form.Item label={<Text>PLC ポート番号</Text>}>
-      <Form.Item name="plc_port">
+      <Form.Item name="plc.port">
         <InputNumber min={1} max={20000} />
       </Form.Item>
     </Form.Item>
     <Form.Item label={<Text>PLC タイムアウト</Text>}>
-      <Form.Item name="plc_timeout">
+      <Form.Item name="plc.timeout">
         <InputNumber min={1} max={20000} />
       </Form.Item>
     </Form.Item>
     <Form.Item name="enable_plc" label={<Text>PLC 有効</Text>} valuePropName="checked">
       <Switch />
     </Form.Item>
-
-    <SectionTitle>Realsense</SectionTitle>
-    <Form.Item label={<Text>X軸 加速度 最大値</Text>}>
-      <Form.Item name="accel_max.x">
-        <InputNumber min={5} max={20} />
-      </Form.Item>
-    </Form.Item>
-    <Form.Item label={<Text>Y軸 加速度 最大値</Text>}>
-      <Form.Item name="accel_max.y">
-        <InputNumber min={5} max={20} />
-      </Form.Item>
-    </Form.Item>
-    <Form.Item label={<Text>Z軸 加速度 最大値</Text>}>
-      <Form.Item name="accel_max.z">
-        <InputNumber min={5} max={20} />
-      </Form.Item>
-    </Form.Item>
-    <SectionTitle>座標検知</SectionTitle>
-    <Form.Item name="depth_input" label={<Text>深度入力</Text>} hasFeedback>
-      <Select placeholder="Please select a device">
-        <Option value="terabee">TeraBee</Option>
-        <Option value="depth_camera">Realsense Depth Camera</Option>
-      </Select>
-    </Form.Item>
-    <Form.Item name="points_order" label={<Text>点の順番</Text>} hasFeedback>
+    <Form.Item name="plc.points_order" label={<Text>点の順番</Text>} hasFeedback>
       <Select placeholder="Please select a device">
         <Option value="from_left_up">左上から</Option>
         <Option value="from_left_down">右下から</Option>
@@ -136,110 +114,151 @@ const Forms = ({ currentConfig, onFinish }) => (
         <Option value="from_right_down">右下から</Option>
       </Select>
     </Form.Item>
-    <Form.Item name="tta" label={<Text>TTA（精度向上）</Text>} valuePropName="checked">
+    <Form.Item
+      name="plc.write_point_with_2word"
+      label={<Text>書き込みに2レジスタを使用</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+
+    <SectionTitle>Realsense</SectionTitle>
+    <Form.Item label={<Text>X軸 加速度 最大値</Text>}>
+      <Form.Item name="realsense.accel_max.x">
+        <InputNumber min={5} max={20} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>Y軸 加速度 最大値</Text>}>
+      <Form.Item name="realsense.accel_max.y">
+        <InputNumber min={5} max={20} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>Z軸 加速度 最大値</Text>}>
+      <Form.Item name="realsense.accel_max.z">
+        <InputNumber min={5} max={20} />
+      </Form.Item>
+    </Form.Item>
+
+    <SectionTitle>座標検知</SectionTitle>
+
+    <Form.Item
+      name="deep_learning.tta"
+      label={<Text>TTA（精度向上）</Text>}
+      valuePropName="checked"
+    >
       <Switch />
     </Form.Item>
     <Form.Item
-      name="enable_sample_img"
+      name="deep_learning.enable_sample_img"
       label={<Text>サンプル画像を使用</Text>}
       valuePropName="checked"
     >
       <Switch />
     </Form.Item>
     <Form.Item
-      name="pickup_point_reverse.xy"
-      label={<Text>X軸とY軸を反転（取出）</Text>}
+      name="deep_learning.detect_block_detail"
+      label={<Text>基準ブロックを2段階で検知</Text>}
       valuePropName="checked"
     >
       <Switch />
     </Form.Item>
     <Form.Item
-      name="pickup_point_reverse.x"
-      label={<Text>X軸を反転（取出）</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="pickup_point_reverse.y"
-      label={<Text>Y軸を反転（取出）</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="insert_point_reverse.xy"
-      label={<Text>X軸とY軸を反転（格納）</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="insert_point_reverse.x"
-      label={<Text>X軸を反転（格納）</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="insert_point_reverse.y"
-      label={<Text>Y軸を反転（格納）</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="convert_dimension"
-      label={<Text>基準ブロックを使用して座標変換</Text>}
-      valuePropName="checked"
-    >
-      <Switch />
-    </Form.Item>
-    <Form.Item
-      name="enable_manual_block_pos"
+      name="deep_learning.enable_manual_block_pos"
       label={<Text>基準ブロックの座標を手動入力</Text>}
       valuePropName="checked"
     >
       <Switch />
     </Form.Item>
     <Form.Item label={<Text>上側基準ブロック X座標</Text>}>
-      <Form.Item name="manual_block_pos.up.x">
+      <Form.Item name="deep_learning.manual_block_pos.up.x">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
     <Form.Item label={<Text>上側基準ブロック Y座標1</Text>}>
-      <Form.Item name="manual_block_pos.up.y">
+      <Form.Item name="deep_learning.manual_block_pos.up.y">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
     <Form.Item label={<Text>下側基準ブロック X座標</Text>}>
-      <Form.Item name="manual_block_pos.down.x">
+      <Form.Item name="deep_learning.manual_block_pos.down.x">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
     <Form.Item label={<Text>下側基準ブロック Y座標</Text>}>
-      <Form.Item name="manual_block_pos.down.y">
+      <Form.Item name="deep_learning.manual_block_pos.down.y">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
-    <Form.Item label={<Text>座標値の倍率</Text>}>
-      <Form.Item name="write_value_rate.angle">
-        <InputNumber min={1} max={10000} />
-      </Form.Item>
-    </Form.Item>
-    <Form.Item label={<Text>姿勢値の倍率</Text>}>
-      <Form.Item name="write_value_rate.pos">
-        <InputNumber min={1} max={10000} />
-      </Form.Item>
-    </Form.Item>
+
+    <SectionTitle>座標検知 後処理</SectionTitle>
     <Form.Item
-      name="write_point_with_2word"
-      label={<Text>書き込みに2レジスタを使用</Text>}
+      name="post_process.pickup_point_reverse.xy"
+      label={<Text>X軸とY軸を反転（取出）</Text>}
       valuePropName="checked"
     >
       <Switch />
     </Form.Item>
+    <Form.Item
+      name="post_process.pickup_point_reverse.x"
+      label={<Text>X軸を反転（取出）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item
+      name="post_process.pickup_point_reverse.y"
+      label={<Text>Y軸を反転（取出）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item
+      name="post_process.insert_point_reverse.xy"
+      label={<Text>X軸とY軸を反転（格納）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item
+      name="post_process.insert_point_reverse.x"
+      label={<Text>X軸を反転（格納）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item
+      name="post_process.insert_point_reverse.y"
+      label={<Text>Y軸を反転（格納）</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item
+      name="post_process.convert_dimension"
+      label={<Text>基準ブロックを使用して座標変換</Text>}
+      valuePropName="checked"
+    >
+      <Switch />
+    </Form.Item>
+    <Form.Item label={<Text>座標値の倍率</Text>}>
+      <Form.Item name="post_process.write_value_rate.angle">
+        <InputNumber min={1} max={10000} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>姿勢値の倍率</Text>}>
+      <Form.Item name="post_process.write_value_rate.pos">
+        <InputNumber min={1} max={10000} />
+      </Form.Item>
+    </Form.Item>
+
     <SectionTitle>その他</SectionTitle>
+
+    <Form.Item name="depth_input" label={<Text>深度入力</Text>} hasFeedback>
+      <Select placeholder="Please select a device">
+        <Option value="terabee">TeraBee</Option>
+        <Option value="depth_camera">Realsense Depth Camera</Option>
+      </Select>
+    </Form.Item>
 
     <Form.Item
       name="experiment"
@@ -250,7 +269,7 @@ const Forms = ({ currentConfig, onFinish }) => (
     </Form.Item>
 
     <Form.Item label={<Text>プレビューの点サイズ</Text>}>
-      <Form.Item name="preview_point_size">
+      <Form.Item name="preview.point_size">
         <InputNumber min={1} max={10} />
       </Form.Item>
     </Form.Item>
