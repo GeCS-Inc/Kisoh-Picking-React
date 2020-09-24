@@ -1,11 +1,14 @@
 import AutoScroll from "@brianmcallister/react-auto-scroll";
-import { Button, Input } from "antd";
+import { Button, Input, Space, Typography, InputNumber, Modal } from "antd";
 import React, { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import useInterval from "use-interval";
-import { useGetApi, usePostApi } from "./utils/hooks/useApi";
+import { useGetApi, usePostApi, useFormPostApi } from "./utils/hooks/useApi";
 import sampleImg from "./resources/sample.png";
+import { Switch } from "antd";
+
+const { confirm } = Modal;
 
 const Row = styled.div`
   display: flex;
@@ -43,6 +46,17 @@ const SubTitle = styled.p`
   font-size: 18px;
 `;
 
+const useToggleState = (s) => {
+  const [state, setState] = useState(s);
+  const onChange = useCallback(() => setState(!state), [state]);
+  return [state, onChange];
+};
+const useInputState = (s) => {
+  const [state, setState] = useState(s);
+  const onChange = useCallback((v) => setState(v), []);
+  return [state, onChange];
+};
+
 const Top = () => {
   const [log, , readLogFn] = useGetApi("/read-log");
   const [position, , readPositionFn] = useGetApi("/read-result");
@@ -62,6 +76,10 @@ const Top = () => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
+  const [rectifyMode, , loadRectifyMode] = useGetApi("/get-rectify-mode", false);
+  const [rectifyX, handleChangeRectifyX] = useInputState(0);
+  const [rectifyY, handleChangeRectifyY] = useInputState(0);
+
   const [plcReadMes, loadPlcReadMes] = usePostApi("/read-plc", {
     device_number: plcReadDN,
     device_count: plcReadDC,
@@ -77,6 +95,28 @@ const Top = () => {
     x,
     y,
   });
+  const [, setRectifyMode] = usePostApi(
+    "/set-rectify-mode",
+    {
+      mode: !rectifyMode,
+    },
+    loadRectifyMode
+  );
+  const [, writeRectifyParams] = usePostApi("/write-rectify-params", {
+    x: rectifyX,
+    y: rectifyY,
+  });
+  const [, resetRectifyParams] = usePostApi("/reset-rectify-params");
+
+  const confirmResetRectifyParams = useCallback(
+    () =>
+      confirm({
+        title: "補正の設定データを削除してもよろしいですか？",
+        content: "保存した補正データがすべて削除されます。",
+        onOk: resetRectifyParams,
+      }),
+    []
+  );
 
   const inputImgSrc = inputImg.length > 0 ? `data:image/jpeg;base64,${inputImg}` : sampleImg;
   const outputImgSrc = outputImg.length > 0 ? `data:image/jpeg;base64,${outputImg}` : sampleImg;
@@ -128,6 +168,41 @@ const Top = () => {
         <pre>
           x: {x}, y: {y}
         </pre>
+      </Row>
+      <Row>
+        <Space align="center">
+          位置補正モード
+          <Switch
+            defaultChecked
+            checked={rectifyMode}
+            onChange={() => {
+              setRectifyMode();
+              console.log("asdfasdf");
+            }}
+          />
+          x補正値:{" "}
+          <InputNumber
+            disabled={!rectifyMode}
+            min={-500}
+            max={500}
+            value={rectifyX}
+            onChange={handleChangeRectifyX}
+          />
+          y補正値:{" "}
+          <InputNumber
+            disabled={!rectifyMode}
+            min={-500}
+            max={500}
+            value={rectifyY}
+            onChange={handleChangeRectifyY}
+          />
+          <Button type="primary" disabled={!rectifyMode} onClick={writeRectifyParams}>
+            書き込み
+          </Button>
+          <Button type="secondary" disabled={!rectifyMode} onClick={confirmResetRectifyParams}>
+            設定をリセット
+          </Button>
+        </Space>
       </Row>
       <Row>
         <div>

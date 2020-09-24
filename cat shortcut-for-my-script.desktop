@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Click-Script
+Icon=utilities-terminal
+Exec=gnome-terminal -e "bash -c 'cd ~/Code/Narikawa/Matter/Kisoh/Kisoh-Picking-React && yarn start;$SHELL'" && gnome-terminal --tab -e "bash -c 'cd ~/Code/Narikawa/Matter/Kisoh/Kisoh-Picking-React && pwd;$SHELL'"
+Categories=Application;

@@ -169,23 +169,43 @@ const Forms = ({ currentConfig, onFinish }) => (
     >
       <Switch />
     </Form.Item>
-    <Form.Item label={<Text>上側基準ブロック X座標</Text>}>
-      <Form.Item name="deep_learning.manual_block_pos.up.x">
+    <Form.Item label={<Text>取出 上側基準ブロック X座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.pickup.up.x">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
-    <Form.Item label={<Text>上側基準ブロック Y座標1</Text>}>
-      <Form.Item name="deep_learning.manual_block_pos.up.y">
+    <Form.Item label={<Text>取出 上側基準ブロック Y座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.pickup.up.y">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
-    <Form.Item label={<Text>下側基準ブロック X座標</Text>}>
-      <Form.Item name="deep_learning.manual_block_pos.down.x">
+    <Form.Item label={<Text>取出 下側基準ブロック X座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.pickup.down.x">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>
-    <Form.Item label={<Text>下側基準ブロック Y座標</Text>}>
-      <Form.Item name="deep_learning.manual_block_pos.down.y">
+    <Form.Item label={<Text>取出 下側基準ブロック Y座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.pickup.down.y">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>格納 上側基準ブロック X座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.insert.up.x">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>格納 上側基準ブロック Y座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.insert.up.y">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>格納 下側基準ブロック X座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.insert.down.x">
+        <InputNumber min={0} max={383} />
+      </Form.Item>
+    </Form.Item>
+    <Form.Item label={<Text>格納 下側基準ブロック Y座標</Text>}>
+      <Form.Item name="deep_learning.manual_block_pos.insert.down.y">
         <InputNumber min={0} max={383} />
       </Form.Item>
     </Form.Item>

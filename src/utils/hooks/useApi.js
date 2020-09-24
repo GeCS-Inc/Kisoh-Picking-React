@@ -29,7 +29,7 @@ export function useFormPostApi(endpoint, onSuccess) {
     (params) => {
       axios.post(`${HOST}${endpoint}`, params).then((d) => {
         setData(d.data);
-        onSuccess();
+        onSuccess && onSuccess();
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,11 +38,14 @@ export function useFormPostApi(endpoint, onSuccess) {
   return [data, loadFn];
 }
 
-export function usePostApi(endpoint, params) {
+export function usePostApi(endpoint, params, onSuccess) {
   const [data, setData] = useState("");
   const loadFn = () => {
     const urlParams = new URLSearchParams(params);
-    axios.post(`${HOST}${endpoint}`, urlParams).then((d) => setData(d.data));
+    axios.post(`${HOST}${endpoint}`, urlParams).then((d) => {
+      setData(d.data);
+      onSuccess && onSuccess();
+    });
   };
   return [data, loadFn];
 }
